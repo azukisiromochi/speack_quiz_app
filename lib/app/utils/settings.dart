@@ -1,2 +1,2 @@
 // Agora AppId
-const AGORA_APP_ID = 'XXXXXXXXXXXXXXXXXXXXXX';
+const AGORA_APP_ID = 'HOGEHOGE';
