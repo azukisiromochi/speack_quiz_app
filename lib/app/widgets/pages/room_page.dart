@@ -90,8 +90,11 @@ class _RoomForm extends StatelessWidget {
           size: 30,
         ),
         onPressed: () {
-          // TODO: 退室してよいかの確認ダイアログを入れる
-          _bloc.add(RoomPageExit());
+          // 退室処理を定義
+          final Function _roomExit = () => _bloc.add(RoomPageExit());
+
+          // 確認ダイアログを表示して退室有無を確認する
+          _showRoomExitDialog(okButtonPressed: _roomExit, context: context);
         },
       ),
       centerTitle: true,
@@ -262,12 +265,13 @@ class _RoomForm extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         children: <Widget>[
+          _buildQuizText(context),
           const SpaceBox(height: 30),
           _buildJoinUsersAreaForPlaying(context, users),
           const SpaceBox(height: 20),
-          _buildSkipQuizButton(context),
-          const SpaceBox(height: 80),
-          const MicButton(),
+          // _buildSkipQuizButton(context),
+          // const SpaceBox(height: 80),
+          _buildMicButton(context, myUser),
         ],
       ),
     );
@@ -287,17 +291,37 @@ class _RoomForm extends StatelessWidget {
           const SpaceBox(height: 20),
           _buildJoinUsersAreaForPlaying(context, users),
           const SpaceBox(height: 30),
-          const MicButton(),
+          _buildMicButton(context, myUser),
         ],
       ),
     );
   }
 
+  ///
+  /// Build: [マイク]ボタン生成
+  ///
   Widget _buildMicButton(BuildContext context, RoomUser user) {
     // TODO: マスターの場合のみ、SpeechToTextBlocを作動させる
+
+    // blocの取得
+    // ignore: close_sinks
+    final SpeechToTextBloc _bloc =
+        BlocProvider.of<RoomPageBloc>(context).speechToTextBloc;
+
+    // マスターか否かの判定
+    bool isMaster = user.role == RoomUserRole.MASTER;
+
     return MicButton(
-      onTapDown: () => {},
-      onTapUp: () => {},
+      onTapDown: () {
+        if (isMaster) {
+          _bloc.add(SpeechToTextStop());
+        }
+      },
+      onTapUp: () {
+        if (isMaster) {
+          _bloc.add(SpeechToTextRecord());
+        }
+      },
     );
   }
 
@@ -440,23 +464,32 @@ class _RoomForm extends StatelessWidget {
   // ===============================================
 
   ///
-  /// Method: アラートダイアログを表示する
+  /// Method: 退室確認ダイアログを表示する
   ///
-  Future<void> _showAlertDialog(
-      {BuildContext context, String title, String content}) {
-    return showDialog<void>(
+  Future<void> _showRoomExitDialog(
+      {Function okButtonPressed, BuildContext context}) {
+    return showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('OK'),
-            onPressed: () => Navigator.of(dialogContext).pop(),
-          )
-        ],
-      ),
+      builder: (_) {
+        return AlertDialog(
+          content: Text("退室しますか？"),
+          actions: <Widget>[
+            // ボタン領域
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () => Navigator.pop(_),
+            ),
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                okButtonPressed();
+                Navigator.pop(_);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
