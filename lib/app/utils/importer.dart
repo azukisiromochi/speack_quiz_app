@@ -15,3 +15,4 @@ export 'package:eva_icons_flutter/eva_icons_flutter.dart';
 export 'package:progress_dialog/progress_dialog.dart';
 export 'package:flutter_speech/flutter_speech.dart';
 export 'package:flutter_progress_hud/flutter_progress_hud.dart';
+export 'package:image_picker/image_picker.dart';

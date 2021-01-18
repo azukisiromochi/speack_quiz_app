@@ -6,8 +6,9 @@ class Room {
   String id; // ID
   List<RoomUser> users; // 参加者
   RoomPlayingState state; // 状態
+  String quizText; // 問題文
 
-  Room({this.id, this.users, this.state});
+  Room({this.id, this.users, this.state, this.quizText});
 
   ///
   /// Method: FireStoreのDocumentからインスタンスを生成する.
@@ -17,7 +18,7 @@ class Room {
       return null;
     }
 
-    // TODO 後から
+    // TODO 要リファクタリング
     Map<String, dynamic> json = Map.from(doc.data);
     Map<String, dynamic> users = Map.from(json["users"]);
     List<RoomUser> roomUsers = users.values
@@ -28,6 +29,7 @@ class Room {
       id: doc.documentID,
       users: roomUsers ?? [],
       state: RoomStateExtension.of(json["state"]) ?? null,
+      quizText: json["quiz_text"],
     );
   }
 
@@ -36,6 +38,7 @@ class Room {
       "id": id,
       "users": users?.map((e) => e.toJsonMap())?.join(","),
       "state": state.value,
+      "quiz_text": quizText,
     };
   }
 }

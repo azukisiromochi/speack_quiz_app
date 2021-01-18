@@ -48,11 +48,13 @@ dev_dependencies:
   ## 全画面プログレス表示
   flutter_progress_hud: ^1.0.2
 
+  ## 画像選択Picker
+  image_picker: ^0.6.3+1
+
   ## 追加のアイコン
   eva_icons_flutter: ^2.0.0
 
   ## agora
-  cupertino_icons: ^0.1.2
   agora_rtc_engine: 1.0.5
   permission_handler: ^3.0.0
   ## 音声 to テキスト
