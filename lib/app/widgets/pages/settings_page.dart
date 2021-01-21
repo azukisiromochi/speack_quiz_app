@@ -1,4 +1,5 @@
 import 'package:quiz_app/app/utils/importer.dart';
+import 'package:quiz_app/app/utils/my_colors.dart';
 import 'package:quiz_app/app/widgets/components/editable_circle_user_image.dart';
 import 'package:quiz_app/app/widgets/components/space_box.dart';
 
@@ -17,27 +18,56 @@ class _SettingsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          // 横幅のマージン
-          width: double.infinity,
-          padding: EdgeInsets.only(left: 10, right: 10),
+      body: CustomScrollView(
+        slivers: [
+          _buildHeader(context),
+        ],
+      ),
+    );
+  }
+
+  SliverAppBar _buildHeader(BuildContext context) {
+    return SliverAppBar(
+      shadowColor: Colors.black,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment(0.3, 1.6),
+                end: Alignment.topRight,
+                stops: [
+                  0.5,
+                  0.5,
+                ],
+                colors: [
+                  MyColors.darkColor,
+                  MyColors.baseColor,
+                ]),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SpaceBox(height: 100),
-              Container(
-                width: 100,
-                height: 100,
-                color: Colors.white,
-              ),
+              const SpaceBox(height: 50),
               EditableCircleUserImage(
-                size: 120,
+                imagePath:
+                    "https://firebasestorage.googleapis.com/v0/b/quizpushtalk.appspot.com/o/o0800106713741944682.jpg?alt=media&token=8fbaa6b2-2b0e-41ca-99d3-ba9b505e1673",
+                size: 100,
               ),
+              const SpaceBox(height: 5),
+              Text(
+                "Lady GaGa",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SpaceBox(height: 5),
             ],
           ),
         ),
       ),
+      expandedHeight: 200,
     );
   }
 }

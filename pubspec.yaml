@@ -57,8 +57,8 @@ dev_dependencies:
   ## agora
   agora_rtc_engine: 1.0.5
   permission_handler: ^3.0.0
-  ## 音声 to テキスト
 
+  ## 音声 to テキスト
   flutter_speech: ^1.1.0
 
 flutter:

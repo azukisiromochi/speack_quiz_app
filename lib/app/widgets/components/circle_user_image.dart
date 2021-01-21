@@ -10,31 +10,26 @@ class CircleUserImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 円形にくりぬいて画像URLがあれば設定する
-    BoxDecoration _boxDecoration = BoxDecoration(
-      shape: BoxShape.circle,
-      color: Colors.white,
-      border: Border.all(color: Colors.black),
-      image: (imagePath.isNotEmpty)
-          ? DecorationImage(fit: BoxFit.fill, image: NetworkImage(imagePath))
-          : null,
-    );
+    bool hasImagePath = imagePath != null && imagePath.isNotEmpty;
 
-    // 画像がなければアイコンを設定
-    Widget _icon = (imagePath.isEmpty)
-        ? Icon(
-            Icons.person,
-            color: Colors.grey,
-            size: size - 10,
-          )
-        : Container();
+    // 画像をくり抜いてURLがあれば設定する
+    BoxDecoration _boxDecoration = BoxDecoration(
+      borderRadius: BorderRadius.all(
+        Radius.circular(30.0),
+      ),
+      color: Colors.white,
+      image: hasImagePath
+          ? DecorationImage(fit: BoxFit.fill, image: NetworkImage(imagePath))
+          : DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage("assets/images/empty_user_image.png")),
+    );
 
     // 表示
     return Container(
       width: size,
       height: size,
       decoration: _boxDecoration,
-      child: _icon,
     );
   }
 }

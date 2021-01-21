@@ -10,6 +10,7 @@ import 'package:quiz_app/app/widgets/components/my_icon_button.dart';
 import 'package:quiz_app/app/widgets/components/quiz_progress_indicator.dart';
 import 'package:quiz_app/app/widgets/components/space_box.dart';
 import 'package:quiz_app/app/widgets/pages/room_page.dart';
+import 'package:quiz_app/app/widgets/pages/settings_page.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key key}) : super(key: key);
@@ -183,7 +184,12 @@ class _MenuForm extends StatelessWidget {
   /// Event: 設定ボタン押下
   ///
   Future<void> onSettings(BuildContext context) async {
-    // TODO: 設定ページを作成する
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SettingsPage(),
+      ),
+    );
   }
 
   ///
