@@ -12,15 +12,27 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class _SettingsForm extends StatelessWidget {
+class _SettingsForm extends StatefulWidget {
   const _SettingsForm({Key key}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() => _SettingFormState();
+}
+
+class _SettingFormState extends State<_SettingsForm>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           _buildHeader(context),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            Container(
+              height: 600,
+            )
+          ])),
         ],
       ),
     );
@@ -29,6 +41,9 @@ class _SettingsForm extends StatelessWidget {
   SliverAppBar _buildHeader(BuildContext context) {
     return SliverAppBar(
       shadowColor: Colors.black,
+      floating: true,
+      pinned: true,
+      snap: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           decoration: BoxDecoration(
@@ -57,17 +72,40 @@ class _SettingsForm extends StatelessWidget {
               Text(
                 "Lady GaGa",
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SpaceBox(height: 5),
+              TabBar(
+                controller: TabController(
+                  length: 3,
+                  initialIndex: 1,
+                  vsync: this,
+                ),
+                indicator: MaterialIndicator(
+                  color: Colors.black,
+                  horizontalPadding: 40,
+                  paintingStyle: PaintingStyle.fill,
+                ),
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(
+                    text: "Profile",
+                  ),
+                  Tab(
+                    text: "Score",
+                  ),
+                  Tab(
+                    text: "Star",
+                  ),
+                ],
+              )
             ],
           ),
         ),
       ),
-      expandedHeight: 200,
+      expandedHeight: 210,
     );
   }
 }
