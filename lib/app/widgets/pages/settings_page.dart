@@ -21,8 +21,42 @@ class _SettingsForm extends StatefulWidget {
 
 class _SettingFormState extends State<_SettingsForm>
     with TickerProviderStateMixin {
+  TabController _tabCon;
+
+  final List<Tab> tabs = <Tab>[
+    Tab(
+      text: 'Profile',
+    ),
+    Tab(
+      text: "Score",
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabCon = TabController(
+      length: 2,
+      initialIndex: 0,
+      vsync: this,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget tabBarView = TabBarView(
+      controller: _tabCon,
+      children: tabs
+          .map(
+            (tab) => Container(
+              height: 600,
+              child: Text(tab.text),
+            ),
+          )
+          .toList(),
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -31,7 +65,8 @@ class _SettingFormState extends State<_SettingsForm>
               delegate: SliverChildListDelegate([
             Container(
               height: 600,
-            )
+              child: Text("hoge"),
+            ),
           ])),
         ],
       ),
@@ -39,73 +74,67 @@ class _SettingFormState extends State<_SettingsForm>
   }
 
   SliverAppBar _buildHeader(BuildContext context) {
+    Decoration headerDecoration = BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment(0.3, 1.6),
+          end: Alignment.topRight,
+          stops: [
+            0.5,
+            0.5,
+          ],
+          colors: [
+            MyColors.darkColor,
+            MyColors.baseColor,
+          ]),
+    );
+
+    Widget userImage = EditableCircleUserImage(
+      imagePath:
+          "https://firebasestorage.googleapis.com/v0/b/quizpushtalk.appspot.com/o/o0800106713741944682.jpg?alt=media&token=8fbaa6b2-2b0e-41ca-99d3-ba9b505e1673",
+      size: 100,
+    );
+
+    Widget userName = Text(
+      "Lady GaGa",
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
+    Widget tabBar = TabBar(
+      controller: _tabCon,
+      indicator: MaterialIndicator(
+        color: Colors.black,
+        horizontalPadding: 40,
+        paintingStyle: PaintingStyle.fill,
+      ),
+      labelColor: Colors.black,
+      tabs: tabs,
+    );
+
     return SliverAppBar(
       shadowColor: Colors.black,
       floating: true,
       pinned: true,
       snap: true,
+      bottom: tabBar,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment(0.3, 1.6),
-                end: Alignment.topRight,
-                stops: [
-                  0.5,
-                  0.5,
-                ],
-                colors: [
-                  MyColors.darkColor,
-                  MyColors.baseColor,
-                ]),
-          ),
+          decoration: headerDecoration,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SpaceBox(height: 50),
-              EditableCircleUserImage(
-                imagePath:
-                    "https://firebasestorage.googleapis.com/v0/b/quizpushtalk.appspot.com/o/o0800106713741944682.jpg?alt=media&token=8fbaa6b2-2b0e-41ca-99d3-ba9b505e1673",
-                size: 100,
-              ),
+              userImage,
               const SpaceBox(height: 5),
-              Text(
-                "Lady GaGa",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              userName,
               const SpaceBox(height: 5),
-              TabBar(
-                controller: TabController(
-                  length: 3,
-                  initialIndex: 1,
-                  vsync: this,
-                ),
-                indicator: MaterialIndicator(
-                  color: Colors.black,
-                  horizontalPadding: 40,
-                  paintingStyle: PaintingStyle.fill,
-                ),
-                labelColor: Colors.black,
-                tabs: [
-                  Tab(
-                    text: "Profile",
-                  ),
-                  Tab(
-                    text: "Score",
-                  ),
-                  Tab(
-                    text: "Star",
-                  ),
-                ],
-              )
             ],
           ),
         ),
       ),
-      expandedHeight: 210,
+      expandedHeight: 200,
     );
   }
 }
